@@ -2,10 +2,14 @@
 
 
 
+
+
 // Initialized Variables
 static bool buttonPressed = false;
 static uint16_t rawInput = 0;
 static uint8_t appliedDuty = 0;
+
+
 
 
 
@@ -28,6 +32,8 @@ void pinLedConfig(void) {
 
 
 
+
+
 void inputRead(void) {
   buttonPressed = !digitalRead(BUTTON_PIN);
   rawInput = analogRead(POTENTIOMETER_PIN);
@@ -35,12 +41,12 @@ void inputRead(void) {
 
 
 
+
+
 static uint8_t scaleToDuty(uint16_t raw) {
   raw = map(rawInput, 0, 4095, 0, 255);
   return constrain(raw, 0L, 255L);
 }
-
-
 
 void inputProcess(void) {
   // Calibrate rawInput Value Boundaries
@@ -52,13 +58,9 @@ void inputProcess(void) {
 
 
 
-void outputUpdate(void) {
-  // Update Pin 18's State
-  digitalWrite(LED_STATUS_PIN, buttonPressed ? HIGH : LOW);
 
-  // Change Pin 19's PWM Duty Value
-  ledcWrite(LED_PWM_PIN, appliedDuty);
 
+static void avgFormula(void) {
   // Average Formula
   static uint16_t avgRaw = 0;
   static uint16_t avgDuty = 0;
@@ -75,4 +77,14 @@ void outputUpdate(void) {
     avgRaw = avgDuty = 0;
     iteration = 1;
   }
+}
+
+void outputUpdate(void) {
+  // Update Pin 18's State
+  digitalWrite(LED_STATUS_PIN, buttonPressed ? HIGH : LOW);
+
+  // Change Pin 19's PWM Duty Value
+  ledcWrite(LED_PWM_PIN, appliedDuty);
+
+  avgFormula();
 }

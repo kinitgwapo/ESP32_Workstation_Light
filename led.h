@@ -21,6 +21,12 @@ static uint8_t scaleToDuty(uint16_t raw);
 */
 
 void inputProcess(void); // Process raw Analog input from potentiometer (ADC)
+
+/*
+Private function, used to average the the Raw Analog & Calibrated Duty Value by 20, and is called from outputUpdate function
+static oid avgFormula(void);
+*/
+
 void outputUpdate(void); // Updates the LED status and PWM pin
 
 
