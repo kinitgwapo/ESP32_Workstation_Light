@@ -61,7 +61,6 @@ void inputProcess(void) {
 
 
 static void avgFormula(void) {
-  // Average Formula
   static uint16_t avgRaw = 0;
   static uint16_t avgDuty = 0;
   static uint8_t iteration = 1;
